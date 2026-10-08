@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import ChatDock from './components/ChatDock'
 import Mission from './pages/Mission'
 
 export default function App() {
@@ -8,6 +9,7 @@ export default function App() {
         <Route path="/" element={<Mission />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <ChatDock />
     </BrowserRouter>
   )
 }
