@@ -208,9 +208,53 @@ button:focus-visible {
 .viewport {
   grid-area: view;
   position: relative;
-  height: 380px;
+  height: 480px;
   border: 1px solid var(--line);
   background: #0c0910;
+  overflow: hidden;
+}
+
+.viewport-hud {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.8rem;
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--mute);
+}
+
+.viewport-hud b {
+  color: var(--signal);
+  font-weight: 400;
+}
+
+.viewport-hud button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.72rem;
+  background: rgba(12, 9, 16, 0.7);
+}
+
+.viewport-hud button.on {
+  background: var(--frost);
+  color: var(--void);
+  border-color: var(--frost);
+}
+
+.scene-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.8;
+}
+
+.scene-tag--ship {
+  color: var(--signal);
 }
 
 .viewport-legend {
@@ -554,7 +598,7 @@ button:focus-visible {
   }
 
   .viewport {
-    height: 260px;
+    height: 340px;
   }
 }
 

@@ -12,6 +12,13 @@ function pushLog(log, text, tone = 'info') {
   return [{ id: crypto.randomUUID(), t: Date.now(), text, tone }, ...log].slice(0, 80)
 }
 
+// Carga total (71) excede a geração, mas só os essenciais (40) ficam abaixo dela:
+// cortar carga é o que permite à nave recuperar energia e chegar a Marte.
+const SOLAR_BASE = 46
+const SOLAR_SURFACE = 52
+const LEAK_SCALE = 0.15
+const CRUISE_RATE = 0.9
+
 function clamp(n, a, b) {
   return Math.max(a, Math.min(b, n))
 }
@@ -243,12 +250,14 @@ export const useMission = create((set, get) => ({
     }
 
     const draw = systems.filter((x) => x.on).reduce((a, x) => a + x.draw, 0)
-    const solar = (phase === 'surface' ? 38 : 24) * solarEfficiency
-    energy = clamp(energy + (solar - draw) * 0.045 * dt - leak * dt, 0, 100)
+    const solar = (phase === 'surface' ? SOLAR_SURFACE : SOLAR_BASE) * solarEfficiency
+    energy = clamp(energy + ((solar - draw) * 0.045 - leak * LEAK_SCALE) * dt, 0, 100)
 
     const propulsionOn = systems.find((x) => x.id === 'propulsion')?.on
-    if (phase !== 'surface' && propulsionOn && energy > 8) {
-      progress = clamp(progress + 0.42 * dt * (energy / 100) * (probe.mode === 'survival' ? 0.72 : 1), 0, 100)
+    if (phase !== 'surface' && propulsionOn && energy > 2) {
+      const thrust = 0.55 + 0.45 * (energy / 100)
+      const modeFactor = probe.mode === 'survival' ? 0.8 : 1
+      progress = clamp(progress + CRUISE_RATE * dt * thrust * modeFactor, 0, 100)
     }
 
     if (energy < 55 && !probe.active && phase !== 'briefing' && phase !== 'surface') {
@@ -287,6 +296,33 @@ export const useMission = create((set, get) => ({
         }
         log = pushLog(log, 'Modo sobrevivência. Comunicações Terra em pulso mínimo.', 'alert')
       }
+    }
+
+    // Falhas de energia: a sonda isola carga não essencial e estabiliza o barramento.
+    const openPower = faults.find((f) => !f.resolved && f.domain === 'energia' && simTime - f.at > 4)
+    if (openPower) {
+      const shed = shedLoad(systems, 'eco')
+      if (shed.changed) {
+        systems = shed.systems
+        log = pushLog(log, 'Modo económico. Restam propulsão, vida, navegação e a sonda.', 'warn')
+      }
+      const patched = patchFaultInline({ systems, probe, faults, log, leak, solarEfficiency }, FAULTS[openPower.id])
+      systems = patched.systems
+      probe = patched.probe
+      faults = patched.faults
+      log = patched.log
+      leak = patched.leak
+      solarEfficiency = patched.solarEfficiency
+      if (phase === 'crisis') phase = 'recovery'
+    }
+
+    // Reserva recuperada e sem falhas recuperáveis abertas: religa a ligação à Terra.
+    const openRecoverable = faults.some((f) => !f.resolved && f.domain !== 'hardware')
+    const comms = systems.find((x) => x.id === 'comms')
+    if (probe.active && !openRecoverable && energy > 70 && comms && !comms.on && phase !== 'surface') {
+      systems = systems.map((x) => (x.id === 'comms' ? { ...x, on: true, isolated: false } : x))
+      probe = { ...probe, mode: 'eco', lastAction: 'Energia recuperada. Ligação Terra restabelecida.' }
+      log = pushLog(log, 'Reserva acima de 70%. Ligação Terra religada.', 'ok')
     }
 
     const openSoftware = faults.find((f) => !f.resolved && f.domain === 'software' && simTime - f.at > 6)
