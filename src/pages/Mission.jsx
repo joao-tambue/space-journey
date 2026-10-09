@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { useMissionLoop } from '../hooks/useMissionLoop'
 import { PHASES } from '../data/catalog'
 import { useMission } from '../store/missionStore'
@@ -11,6 +10,7 @@ import EnergyChart from '../components/EnergyChart'
 import TelemetryLog from '../components/TelemetryLog'
 import Alerts from '../components/Alerts'
 import Exploration from '../components/Exploration'
+import Briefing from '../components/Briefing'
 
 export default function Mission() {
   useMissionLoop()
@@ -25,28 +25,12 @@ export default function Mission() {
 
   if (phase === 'briefing') {
     return (
-      <main className="briefing">
-        <p className="eyebrow">CAF · Missão Origem</p>
-        <motion.h1 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          Chegar a Marte.
-          <br />
-          Se a energia falhar, a sonda decide.
-        </motion.h1>
-        <p className="lede">
-          Esta demonstração mostra o arco Terra–Marte, a gestão energética da nave e a sonda Origem: ela
-          analisa falhas, entra em modo económico ou de sobrevivência, corrige o que é software e, se o
-          problema ultrapassar a sua autoridade, avisa a tripulação e a Terra.
-        </p>
-        <ol className="rules">
-          <li>Objectivo: inserção segura e exploração da superfície.</li>
-          <li>Queda de energia activa a sonda. Ela desliga o que não é essencial.</li>
-          <li>Falhas de software são resolvidas a bordo pela sonda.</li>
-          <li>Falhas além da sonda geram notificação à tripulação e à Terra.</li>
-        </ol>
-        <button type="button" className="go" onClick={startMission}>
-          Autorizar lançamento
-        </button>
-      </main>
+      <Briefing
+        onLaunch={() => {
+          window.scrollTo(0, 0)
+          startMission()
+        }}
+      />
     )
   }
 

@@ -1,0 +1,461 @@
+/* ── Ecrã inicial: céu, horizonte de Marte e explicação ────────── */
+
+.landing {
+  position: relative;
+  min-height: 100svh;
+  overflow: clip;
+  background: #0b080b;
+  isolation: isolate;
+  padding-top: 1.25rem;
+  scroll-behavior: smooth;
+}
+
+.landing a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Estrelas */
+.landing-sky {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100svh;
+  z-index: -3;
+  pointer-events: none;
+}
+
+.landing-sky i {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff6e8;
+  animation: landing-twinkle ease-in-out infinite;
+}
+
+@keyframes landing-twinkle {
+  50% {
+    opacity: 0.08;
+  }
+}
+
+/* Névoa central quente-violeta por trás do título */
+.landing-haze {
+  position: absolute;
+  left: 50%;
+  top: 22svh;
+  width: min(1100px, 120vw);
+  height: 80svh;
+  transform: translateX(-50%);
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 40% at 50% 40%, #5a2448a6 0%, transparent 70%),
+    radial-gradient(ellipse 35% 30% at 50% 85%, #c45a2a40 0%, transparent 75%);
+  filter: blur(20px);
+}
+
+/* Planeta: um círculo enorme cujo topo forma o horizonte */
+.landing-planet {
+  position: absolute;
+  left: 50%;
+  top: calc(100svh - clamp(110px, 16vw, 190px));
+  width: max(2200px, 190vw);
+  aspect-ratio: 1;
+  margin-left: calc(max(2200px, 190vw) / -2);
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 0%, #3a1a17 0%, #1e0f10 6%, #120a0c 14%, #0b080b 30%);
+  box-shadow:
+    0 -1px 0 0 #ffe2b880,
+    0 -6px 24px 0 #f6c45399,
+    0 -24px 80px 4px #e07a3a66,
+    0 -80px 220px 30px #8a3a4a55;
+}
+
+/* Linha de luz no limbo, mais intensa ao centro e a desaparecer nos lados */
+.landing-planet::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 2px 1px #fff1d6,
+    inset 0 10px 30px #f6a13a55;
+  -webkit-mask-image: linear-gradient(90deg, transparent 36%, #000 47%, #000 53%, transparent 64%);
+  mask-image: linear-gradient(90deg, transparent 36%, #000 47%, #000 53%, transparent 64%);
+}
+
+/* Aurora âmbar a nascer do horizonte */
+.landing-dawn {
+  position: absolute;
+  left: 50%;
+  top: -260px;
+  width: 1100px;
+  height: 520px;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse 30% 26% at 50% 50%, #ffd9a0cc 0%, #f6a13a55 35%, transparent 70%),
+    radial-gradient(ellipse 50% 45% at 50% 55%, #c45a2a55 0%, transparent 70%);
+  filter: blur(18px);
+  -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent 50%);
+  mask-image: linear-gradient(180deg, #000 50%, transparent 50%);
+  animation: landing-breathe 7s ease-in-out infinite;
+}
+
+@keyframes landing-breathe {
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Navegação em pílula */
+.landing-nav {
+  position: sticky;
+  top: 1.25rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0.7rem 0.8rem 0.7rem 1.4rem;
+  border: 1px solid #ffffff14;
+  border-radius: 999px;
+  background: #151013c7;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px #0007;
+}
+
+.landing-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.landing-brand svg {
+  color: var(--ochre);
+}
+
+.landing-links {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.landing-links a {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  color: #e9ddd2;
+  transition: background 0.15s, color 0.15s;
+}
+
+.landing-links a:hover {
+  background: #ffffff0d;
+  color: #fff;
+}
+
+.landing-links button {
+  margin-left: 0.3rem;
+  padding: 0.5rem 1.1rem;
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a0f0a;
+  background: linear-gradient(135deg, #f8d27a, var(--ochre));
+}
+
+.landing-links button:hover {
+  background: linear-gradient(135deg, #fbe0a0, #e7b77d);
+}
+
+/* Herói */
+.landing-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - 6rem);
+  padding: 2rem 1.25rem clamp(140px, 20vw, 230px);
+  text-align: center;
+  scroll-margin-top: 6rem;
+}
+
+.landing-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1.6rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #ffffff1a;
+  border-radius: 999px;
+  background: #ffffff08;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e3c9a8;
+}
+
+.landing-chip span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 10px var(--signal);
+}
+
+.landing-hero h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 7.4vw, 6.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: #ece4dc;
+}
+
+.landing-hero h1 > span {
+  display: block;
+}
+
+.landing-word {
+  display: inline-block;
+  margin: 0 0.12em;
+  will-change: filter, transform, opacity;
+}
+
+.landing-accent .landing-word {
+  padding-bottom: 0.06em;
+  background: linear-gradient(180deg, #ffd79a 0%, #e8935a 55%, #c45a2a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-sub {
+  max-width: 40rem;
+  margin: 1.6rem 0 0;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+  color: #c9b9ab;
+}
+
+.landing-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2.2rem;
+}
+
+.landing-go,
+.landing-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: 14px;
+  font-family: var(--body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.landing-go {
+  border: 1px solid #ffd79a66;
+  color: #1a0f0a;
+  background: linear-gradient(135deg, #f8d27a 0%, var(--ochre) 50%, #d26a35 100%);
+  box-shadow:
+    0 10px 30px #c45a2a55,
+    inset 0 1px 0 #fff8;
+}
+
+.landing-go:hover {
+  background: linear-gradient(135deg, #fbe0a0 0%, #e7b77d 50%, #dd7640 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 40px #c45a2a77,
+    inset 0 1px 0 #fff8;
+}
+
+.landing-ghost {
+  border: 1px solid #ffffff26;
+  color: var(--ink);
+  background: #ffffff08;
+  backdrop-filter: blur(8px);
+}
+
+.landing-ghost:hover {
+  border-color: #ffffff40;
+  background: #ffffff12;
+}
+
+/* Explicação, sobre a superfície do planeta */
+.landing-steps {
+  width: min(1180px, calc(100% - 2.5rem));
+  margin: 0 auto;
+  padding: 5rem 0 6rem;
+  scroll-margin-top: 5rem;
+}
+
+.landing-steps header {
+  text-align: center;
+  margin-bottom: 2.8rem;
+}
+
+.landing-steps h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  letter-spacing: -0.03em;
+}
+
+.landing-steps ol {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-steps li {
+  position: relative;
+  padding: 1.4rem 1.3rem 1.5rem;
+  border: 1px solid #ffffff12;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1d1317cc 0%, #120c0fcc 100%);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.landing-steps li:hover {
+  border-color: #d9a06655;
+  transform: translateY(-2px);
+}
+
+.landing-step-icon {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-bottom: 1.1rem;
+  border-radius: 12px;
+  color: #1a0f0a;
+  background: linear-gradient(135deg, #f8d27a, var(--ochre));
+}
+
+.landing-steps small {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.3rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: #8a7666;
+}
+
+.landing-steps strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--display);
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.landing-steps li p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #b8a79a;
+}
+
+.landing-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 3.5rem 0 0;
+  border-top: 1px solid #ffffff12;
+  border-bottom: 1px solid #ffffff12;
+  scroll-margin-top: 7rem;
+}
+
+.landing-stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.3rem;
+  padding: 1.6rem 1rem;
+  text-align: center;
+}
+
+.landing-stats div + div {
+  border-left: 1px solid #ffffff12;
+}
+
+.landing-stats dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #ffd79a, #c45a2a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-stats dt {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a7666;
+}
+
+.landing-final {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 980px) {
+  .landing-steps ol {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .landing-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .landing-stats div:nth-child(3) {
+    border-left: 0;
+  }
+
+  .landing-stats div:nth-child(n + 3) {
+    border-top: 1px solid #ffffff12;
+  }
+}
+
+@media (max-width: 620px) {
+  .landing-nav {
+    padding-left: 1.1rem;
+  }
+
+  .landing-links a {
+    display: none;
+  }
+
+  .landing-steps ol {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-word {
+    margin: 0 0.08em;
+  }
+}

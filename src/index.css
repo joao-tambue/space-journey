@@ -56,11 +56,6 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-.briefing {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 12vh 1.5rem 4rem;
-}
 
 .eyebrow,
 .topbar p,
@@ -78,7 +73,6 @@ button:focus-visible {
   margin: 0 0 0.4rem;
 }
 
-.briefing h1,
 .topbar strong,
 .probe-head strong,
 .systems header strong,
@@ -91,39 +85,10 @@ button:focus-visible {
   letter-spacing: -0.03em;
 }
 
-.briefing h1 {
-  font-size: clamp(2.4rem, 6vw, 4.4rem);
-  line-height: 0.95;
-  margin: 0 0 1.4rem;
-}
 
-.lede {
-  font-size: 1.05rem;
-  color: var(--mute);
-  max-width: 58ch;
-}
 
-.rules {
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.7rem;
-  margin: 2rem 0 2.4rem;
-}
 
-.rules li {
-  border-left: 3px solid var(--iron);
-  padding: 0.2rem 0 0.2rem 0.9rem;
-}
 
-.go {
-  background: var(--iron);
-  border-color: var(--iron);
-  color: var(--ink);
-  padding: 0.9rem 1.3rem;
-  font-family: var(--display);
-  font-size: 1.15rem;
-}
 
 .mission {
   padding: 1rem 1.1rem 2rem;
